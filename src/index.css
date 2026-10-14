@@ -1,0 +1,307 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   DESIGN TOKENS  (Tailwind v4 — theme is defined in CSS, no JS config needed)
+   The palette is deliberately closed: five values, nothing else.
+   ========================================================================== */
+@theme {
+  /* --- Palette ---------------------------------------------------------- */
+  --color-ink: #050505; /* primary background / darkest surface   */
+  --color-charcoal: #1f2933; /* secondary surface, panels, nav         */
+  --color-steel: #4b5563; /* borders, tertiary text                 */
+  --color-mist: #9ca3af; /* muted copy, captions, metadata         */
+  --color-amber: #f59e0b; /* the single accent                      */
+
+  /* Tonal steps derived from the palette (no new hues introduced) */
+  --color-ink-raised: #0a0c0e;
+  --color-charcoal-deep: #141b21;
+
+  /* --- Typography ------------------------------------------------------- */
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid type scale — every size interpolates between 320px and 1440px */
+  --text-eyebrow: clamp(0.625rem, 0.58rem + 0.22vw, 0.75rem);
+  --text-meta: clamp(0.6875rem, 0.64rem + 0.24vw, 0.8125rem);
+  --text-body: clamp(0.9375rem, 0.9rem + 0.25vw, 1.0625rem);
+  --text-lead: clamp(1.0625rem, 0.98rem + 0.42vw, 1.3125rem);
+  --text-h3: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+  --text-h2: clamp(1.875rem, 1.3rem + 2.4vw, 3.5rem);
+  --text-hero: clamp(2.125rem, 1.3rem + 4.1vw, 5rem);
+  --text-numeral: clamp(2.75rem, 1.6rem + 4.6vw, 5.5rem);
+
+  /* --- Motion ----------------------------------------------------------- */
+  /* One easing curve for the whole site keeps the motion feeling authored. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+@layer base {
+  * {
+    border-color: color-mix(in srgb, var(--color-steel) 22%, transparent);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Smooth anchor scrolling, but never for people who asked for less motion */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: #e8eaed;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.65;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Visible, on-brand focus ring for keyboard users only */
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-amber);
+    color: var(--color-ink);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-charcoal);
+    border: 3px solid var(--color-ink);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-steel);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+/* ==========================================================================
+   COMPONENT UTILITIES
+   ========================================================================== */
+@layer components {
+  /* Single source of truth for horizontal rhythm across every section */
+  .shell {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 1rem + 3vw, 5rem);
+  }
+
+  /* Small uppercase label used for section indices, metadata, categories */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-mist);
+  }
+
+  .hairline {
+    height: 1px;
+    width: 100%;
+    background: color-mix(in srgb, var(--color-steel) 32%, transparent);
+  }
+
+  /* Vertical rules that sit behind the content and give the page a grid feel */
+  .grid-rules {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .grid-rules span {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--color-steel) 20%, transparent) 12%,
+      color-mix(in srgb, var(--color-steel) 20%, transparent) 88%,
+      transparent
+    );
+  }
+
+  /* Fine film grain — adds depth to large flat black areas without a gradient */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Underline that wipes in from the left on hover / focus */
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Section backdrop (see components/AmbientField.jsx): a faint line grid,
+     plus an amber copy of it that is only visible inside the spotlight. */
+  .ambient {
+    --spot-x: 50%;
+    --spot-y: 30%;
+    --spot-on: 0;
+    --cell: 72px;
+    --grid-line: color-mix(in srgb, var(--color-steel) 16%, transparent);
+  }
+  /* Phones: text runs edge to edge, so the grid steps further back */
+  @media (max-width: 767px) {
+    .ambient {
+      --grid-line: color-mix(in srgb, var(--color-steel) 9%, transparent);
+    }
+  }
+  .ambient[data-parked] .ambient-grid--lit {
+    display: none;
+  }
+  .ambient-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: var(--cell) var(--cell);
+    background-position: center top;
+    /* Fade the grid out toward the edges so it never reads as a hard pattern */
+    mask-image: radial-gradient(ellipse 75% 70% at 50% 40%, #000 30%, transparent 100%);
+  }
+  .ambient-grid--lit {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-amber) 45%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-amber) 45%, transparent) 1px, transparent 1px);
+    mask-image: radial-gradient(240px circle at var(--spot-x) var(--spot-y), #000, transparent 100%);
+    opacity: var(--spot-on);
+    transition: opacity 0.8s var(--ease-out-expo);
+  }
+  .ambient-spot {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      520px circle at var(--spot-x) var(--spot-y),
+      color-mix(in srgb, var(--color-amber) 7%, transparent),
+      transparent 70%
+    );
+    opacity: var(--spot-on);
+    transition: opacity 0.8s var(--ease-out-expo);
+  }
+
+  /* Custom cursor (components/CustomCursor.jsx). The native cursor is hidden
+     only while that component is mounted; text fields keep their caret. */
+  .has-custom-cursor,
+  .has-custom-cursor * {
+    cursor: none !important;
+  }
+  .has-custom-cursor :is(input, textarea, [contenteditable='true']) {
+    cursor: text !important;
+  }
+
+  /* Four hairline corner brackets — a viewfinder rather than a ring */
+  .cursor-frame {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    --frame: color-mix(in srgb, #e8eaed 70%, transparent);
+  }
+  .cursor-frame.is-link {
+    --frame: var(--color-amber);
+  }
+  .cursor-frame span {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: var(--frame);
+    border-style: solid;
+    border-width: 0;
+    transition: border-color 0.4s var(--ease-out-expo);
+  }
+  .cursor-frame span:nth-child(1) { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+  .cursor-frame span:nth-child(2) { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+  .cursor-frame span:nth-child(3) { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+  .cursor-frame span:nth-child(4) { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+
+  /* Mask used by the staggered line-reveal headings */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION — a global, non-negotiable safety net.
+   Framer Motion variants are also neutralised in JS (see hooks/useMotionSafe)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

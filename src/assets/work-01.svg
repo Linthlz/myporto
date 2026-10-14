@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="Sprint profiling model preview">
+  <defs>
+    <linearGradient id="bga" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#141b21"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <radialGradient id="glowa" cx="0.76" cy="0.18" r="0.72">
+      <stop offset="0" stop-color="#f59e0b" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="na">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#bga)"/>
+  <rect width="1600" height="1000" fill="url(#glowa)"/>
+
+  <g stroke="#4b5563" stroke-opacity="0.13">
+    <path d="M400 0v1000M800 0v1000M1200 0v1000"/>
+  </g>
+
+  <g transform="translate(104 100)">
+    <text font-family="Inter, sans-serif" font-size="23" letter-spacing="3.8095238095238093" fill="#9ca3af">FORCE–VELOCITY PROFILE</text>
+    <path d="M0 35h1392" stroke="#4b5563" stroke-opacity="0.45"/>
+  </g>
+
+  
+  <g transform="translate(180 250)">
+    <path d="M0 0v560h1180" fill="none" stroke="#4b5563" stroke-opacity="0.6" stroke-width="2"/>
+    <g stroke="#4b5563" stroke-opacity="0.18">
+      <path d="M0 0h1180"/><path d="M0 112h1180"/><path d="M0 224h1180"/><path d="M0 336h1180"/><path d="M0 448h1180"/>
+    </g>
+    <path d="M30 60 L1080 520" stroke="#f59e0b" stroke-width="14" stroke-opacity="0.12" stroke-linecap="round"/>
+    <path d="M30 60 L1080 520" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+    <g fill="#9ca3af">
+      <circle cx="70" cy="96" r="9" fill-opacity="0.78"/><circle cx="180" cy="132" r="9" fill-opacity="0.78"/><circle cx="250" cy="214" r="9" fill-opacity="0.78"/><circle cx="372" cy="236" r="9" fill-opacity="0.78"/><circle cx="455" cy="300" r="9" fill-opacity="0.78"/><circle cx="560" cy="318" r="9" fill-opacity="0.78"/><circle cx="648" cy="372" r="9" fill-opacity="0.78"/><circle cx="742" cy="396" r="9" fill-opacity="0.78"/><circle cx="860" cy="452" r="9" fill-opacity="0.78"/><circle cx="965" cy="470" r="9" fill-opacity="0.78"/><circle cx="1040" cy="512" r="9" fill-opacity="0.78"/>
+    </g>
+    <circle cx="560" cy="318" r="18" fill="none" stroke="#f59e0b" stroke-width="2"/>
+    <path d="M560 318h230" stroke="#f59e0b" stroke-opacity="0.5" stroke-dasharray="4 6"/>
+    <text x="802" y="325" font-family="Inter, sans-serif" font-size="22" fill="#f59e0b">Pmax</text>
+  </g>
+
+  <rect width="1600" height="1000" filter="url(#na)" opacity="0.06"/>
+  <rect x="0.5" y="0.5" width="1599" height="999" fill="none" stroke="#4b5563" stroke-opacity="0.3"/>
+</svg>

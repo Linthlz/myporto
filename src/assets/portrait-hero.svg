@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Editorial portrait placeholder">
+  <defs>
+    <linearGradient id="pg1" x1="0.1" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#1f2933"/>
+      <stop offset="0.5" stop-color="#141b21"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <!-- soft key light, neutral so amber stays reserved for the accent -->
+    <radialGradient id="key1" cx="0.38" cy="0.3" r="0.6">
+      <stop offset="0" stop-color="#9ca3af" stop-opacity="0.3"/>
+      <stop offset="0.55" stop-color="#9ca3af" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#9ca3af" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vig1" cx="0.5" cy="0.4" r="0.8">
+      <stop offset="0.4" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.75"/>
+    </radialGradient>
+    
+    <filter id="gr1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="1000" fill="url(#pg1)"/>
+  <rect width="800" height="1000" fill="url(#key1)"/>
+
+  <!-- raking light bands: depth without introducing a new colour -->
+  <g stroke="#9ca3af" stroke-opacity="0.05">
+    <path d="M0 0h800"/><path d="M0 26h800"/><path d="M0 52h800"/><path d="M0 78h800"/><path d="M0 104h800"/><path d="M0 130h800"/><path d="M0 156h800"/><path d="M0 182h800"/><path d="M0 208h800"/><path d="M0 234h800"/><path d="M0 260h800"/><path d="M0 286h800"/><path d="M0 312h800"/><path d="M0 338h800"/><path d="M0 364h800"/><path d="M0 390h800"/><path d="M0 416h800"/><path d="M0 442h800"/><path d="M0 468h800"/><path d="M0 494h800"/><path d="M0 520h800"/><path d="M0 546h800"/><path d="M0 572h800"/><path d="M0 598h800"/><path d="M0 624h800"/><path d="M0 650h800"/><path d="M0 676h800"/><path d="M0 702h800"/><path d="M0 728h800"/><path d="M0 754h800"/><path d="M0 780h800"/><path d="M0 806h800"/><path d="M0 832h800"/><path d="M0 858h800"/><path d="M0 884h800"/><path d="M0 910h800"/><path d="M0 936h800"/><path d="M0 962h800"/><path d="M0 988h800"/><path d="M0 1014h800"/>
+  </g>
+  <g stroke="#4b5563" stroke-opacity="0.18">
+    <path d="M200 0v1000M560 0v1000"/>
+    <path d="M0 620h800"/>
+  </g>
+
+  <rect width="800" height="1000" fill="url(#vig1)"/>
+  <rect width="800" height="1000" filter="url(#gr1)" opacity="0.09"/>
+
+  <!-- crop marks: the single amber accent -->
+  <g stroke="#f59e0b" stroke-opacity="0.75" stroke-width="2" fill="none">
+    <path d="M56 56h54M56 56v54"/>
+    <path d="M744 944h-54M744 944v-54"/>
+  </g>
+
+  <!-- replace-me marker -->
+  <g font-family="Inter, sans-serif" font-size="16" letter-spacing="3.4" fill="#9ca3af" fill-opacity="0.75">
+    <text x="56" y="540">PLACEHOLDER</text>
+    <text x="56" y="572" font-size="13" letter-spacing="2.6" fill-opacity="0.55">REPLACE WITH YOUR PORTRAIT</text>
+  </g>
+  <path d="M56 500h120" stroke="#f59e0b" stroke-opacity="0.8" stroke-width="2"/>
+</svg>

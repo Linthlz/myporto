@@ -1,0 +1,191 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   PHOTOGRAPHY — its own theme, separate from the main portfolio.
+   Earthy and quiet: paper, bark and clay. The photographs carry the colour.
+   ========================================================================== */
+@theme {
+  --color-paper: #eee8de; /* page                                   */
+  --color-linen: #e3dbcd; /* raised panels, image placeholders      */
+  --color-bark: #2b241e; /* text, dark sections                    */
+  --color-umber: #6f6258; /* muted copy                             */
+  --color-clay: #9a6748; /* the single accent                      */
+
+  --font-serif: 'Cormorant Garamond', ui-serif, Georgia, serif;
+  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --text-label: clamp(0.625rem, 0.6rem + 0.15vw, 0.72rem);
+  --text-body: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  --text-lead: clamp(1.35rem, 1.1rem + 1.1vw, 2.1rem);
+  --text-h2: clamp(2.6rem, 1.6rem + 4.2vw, 6rem);
+  --text-display: clamp(3.6rem, 1.4rem + 10vw, 12.5rem);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* No visible scrollbar — the page still scrolls by wheel, touch and keys */
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-bark);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-bark);
+    color: var(--color-paper);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  .frame {
+    width: 100%;
+    max-width: 1520px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 0.8rem + 3vw, 4.5rem);
+  }
+
+  /* Small spaced caps for metadata, indices and navigation */
+  .label {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+
+  /* Paper grain — keeps the flat cream from looking like a screen */
+  .paper-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+
+  .link-draw {
+    position: relative;
+  }
+  .link-draw::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  .link-draw:hover::after,
+  .link-draw:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Selected strip (sections/Selected.jsx). --depth (0 centre → 1 edge) and
+     --drift (-1 left → 1 right) are written by the strip as it moves. */
+  .selected-track {
+    /* side padding of half a free width, so every card — first and last
+       included — can come to rest in the centre */
+    --card-w: min(36svh, 76vw);
+    padding-inline: calc(50% - var(--card-w) / 2);
+    cursor: grab;
+    scrollbar-width: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .selected-track::-webkit-scrollbar {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .selected-track {
+      --card-w: 45vh; /* 60vh tall × 3:4 */
+    }
+  }
+  .selected-track.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none; /* let the drag move freely; snap resumes after */
+  }
+  .selected-frame {
+    transform: scale(calc(1 - var(--depth, 0) * 0.1));
+    transform-origin: 50% 100%;
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+  .selected-img {
+    /* over-scaled so the drift never shows an edge */
+    transform: translateX(calc(var(--drift, 0) * -7%)) scale(1.16);
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+  .selected-caption {
+    opacity: calc(1 - var(--depth, 0) * 0.65);
+    transition: opacity 0.6s var(--ease-out-expo);
+  }
+
+  /* Endless text band */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 38s linear infinite;
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

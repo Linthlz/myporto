@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" role="img" aria-label="Regional potential atlas preview">
+  <defs>
+    <linearGradient id="bgb" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#141b21"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <radialGradient id="glowb" cx="0.76" cy="0.18" r="0.72">
+      <stop offset="0" stop-color="#f59e0b" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="nb">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1200" fill="url(#bgb)"/>
+  <rect width="1600" height="1200" fill="url(#glowb)"/>
+
+  <g stroke="#4b5563" stroke-opacity="0.13">
+    <path d="M400 0v1200M800 0v1200M1200 0v1200"/>
+  </g>
+
+  <g transform="translate(104 120)">
+    <text font-family="Inter, sans-serif" font-size="23" letter-spacing="3.8095238095238093" fill="#9ca3af">REGIONAL POTENTIAL INDEX</text>
+    <path d="M0 42h1392" stroke="#4b5563" stroke-opacity="0.45"/>
+  </g>
+
+  
+  <g transform="translate(150 260)" fill="none" stroke-width="2">
+    <path d="M0 180 L150 70 L360 40 L520 130 L470 300 L250 360 L60 320 Z" fill="#1f2933" fill-opacity="0.75" stroke="#4b5563" stroke-opacity="0.7"/>
+    <path d="M520 130 L740 90 L860 210 L760 360 L470 300 Z" fill="#f59e0b" fill-opacity="0.16" stroke="#f59e0b" stroke-opacity="0.85"/>
+    <path d="M250 360 L470 300 L560 470 L380 560 L190 490 Z" fill="#1f2933" fill-opacity="0.6" stroke="#4b5563" stroke-opacity="0.55"/>
+    <path d="M760 360 L860 210 L1010 250 L980 440 L820 500 Z" fill="#1f2933" fill-opacity="0.5" stroke="#4b5563" stroke-opacity="0.45"/>
+    <path d="M560 470 L820 500 L780 660 L520 630 Z" fill="#1f2933" fill-opacity="0.4" stroke="#4b5563" stroke-opacity="0.4"/>
+    <path d="M190 490 L380 560 L340 700 L150 650 Z" fill="#1f2933" fill-opacity="0.32" stroke="#4b5563" stroke-opacity="0.35"/>
+    <g stroke="none" fill="#f59e0b">
+      <circle cx="665" cy="225" r="11"/>
+      <circle cx="665" cy="225" r="28" fill="none" stroke="#f59e0b" stroke-opacity="0.5" stroke-width="2"/>
+    </g>
+  </g>
+
+  <g transform="translate(1090 300)">
+    <rect width="360" height="520" fill="#0a0c0e" fill-opacity="0.92" stroke="#4b5563" stroke-opacity="0.4"/>
+    <text x="32" y="62" font-family="Inter, sans-serif" font-size="21" letter-spacing="3" fill="#9ca3af">DETAIL PANEL</text>
+    <path d="M32 84h296" stroke="#f59e0b" stroke-opacity="0.65" stroke-width="2"/>
+    <rect x="32" y="124" width="288" height="12" fill="#4b5563" fill-opacity="0.55"/><rect x="32" y="180" width="262" height="12" fill="#4b5563" fill-opacity="0.49500000000000005"/><rect x="32" y="236" width="236" height="12" fill="#4b5563" fill-opacity="0.44000000000000006"/><rect x="32" y="292" width="210" height="12" fill="#4b5563" fill-opacity="0.385"/><rect x="32" y="348" width="184" height="12" fill="#4b5563" fill-opacity="0.33000000000000007"/><rect x="32" y="404" width="158" height="12" fill="#4b5563" fill-opacity="0.275"/><rect x="32" y="460" width="132" height="12" fill="#4b5563" fill-opacity="0.22000000000000003"/>
+  </g>
+
+  <rect width="1600" height="1200" filter="url(#nb)" opacity="0.06"/>
+  <rect x="0.5" y="0.5" width="1599" height="1199" fill="none" stroke="#4b5563" stroke-opacity="0.3"/>
+</svg>

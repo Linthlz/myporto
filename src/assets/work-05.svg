@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 720" role="img" aria-label="Photographic contact sheet preview">
+  <defs>
+    <linearGradient id="bge" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#141b21"/>
+      <stop offset="1" stop-color="#050505"/>
+    </linearGradient>
+    <radialGradient id="glowe" cx="0.76" cy="0.18" r="0.72">
+      <stop offset="0" stop-color="#f59e0b" stop-opacity="0.13"/>
+      <stop offset="1" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="ne">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+
+  <rect width="1680" height="720" fill="url(#bge)"/>
+  <rect width="1680" height="720" fill="url(#glowe)"/>
+
+  <g stroke="#4b5563" stroke-opacity="0.13">
+    <path d="M420 0v720M840 0v720M1260 0v720"/>
+  </g>
+
+  <g transform="translate(109 72)">
+    <text font-family="Inter, sans-serif" font-size="24" letter-spacing="4" fill="#9ca3af">CONTACT SHEET · SELECTS</text>
+    <path d="M0 25h1462" stroke="#4b5563" stroke-opacity="0.45"/>
+  </g>
+
+  
+  <g transform="translate(120 180)">
+    <rect width="215" height="400" fill="#1f2933" fill-opacity="0.8" stroke="#4b5563" stroke-opacity="0.35" stroke-width="1"/>
+    <path d="M0 290 C 55 235, 95 310, 140 258 S 190 205, 215 228 L215 400 L0 400 Z"
+          fill="#050505" fill-opacity="0.78"/>
+    <circle cx="56" cy="104" r="18" fill="#f59e0b" fill-opacity="0.18"/>
+    <text x="2" y="428" font-family="Inter, sans-serif" font-size="17" fill="#9ca3af" fill-opacity="0.6">01</text>
+  </g>
+  <g transform="translate(365 180)">
+    <rect width="215" height="400" fill="#1f2933" fill-opacity="0.73" stroke="#4b5563" stroke-opacity="0.35" stroke-width="1"/>
+    <path d="M0 276 C 55 225, 95 303, 140 252 S 190 209, 215 234 L215 400 L0 400 Z"
+          fill="#050505" fill-opacity="0.78"/>
+    <circle cx="70" cy="104" r="17" fill="#f59e0b" fill-opacity="0.18"/>
+    <text x="2" y="428" font-family="Inter, sans-serif" font-size="17" fill="#9ca3af" fill-opacity="0.6">02</text>
+  </g>
+  <g transform="translate(610 180)">
+    <rect width="215" height="400" fill="#1f2933" fill-opacity="0.66" stroke="#f59e0b" stroke-opacity="0.9" stroke-width="2"/>
+    <path d="M0 262 C 55 215, 95 296, 140 246 S 190 213, 215 240 L215 400 L0 400 Z"
+          fill="#050505" fill-opacity="0.78"/>
+    <circle cx="84" cy="104" r="16" fill="#f59e0b" fill-opacity="0.55"/>
+    <text x="2" y="428" font-family="Inter, sans-serif" font-size="17" fill="#9ca3af" fill-opacity="0.6">03</text>
+  </g>
+  <g transform="translate(855 180)">
+    <rect width="215" height="400" fill="#1f2933" fill-opacity="0.5900000000000001" stroke="#4b5563" stroke-opacity="0.35" stroke-width="1"/>
+    <path d="M0 248 C 55 205, 95 289, 140 240 S 190 217, 215 246 L215 400 L0 400 Z"
+          fill="#050505" fill-opacity="0.78"/>
+    <circle cx="98" cy="104" r="15" fill="#f59e0b" fill-opacity="0.18"/>
+    <text x="2" y="428" font-family="Inter, sans-serif" font-size="17" fill="#9ca3af" fill-opacity="0.6">04</text>
+  </g>
+  <g transform="translate(1100 180)">
+    <rect width="215" height="400" fill="#1f2933" fill-opacity="0.52" stroke="#4b5563" stroke-opacity="0.35" stroke-width="1"/>
+    <path d="M0 234 C 55 195, 95 282, 140 234 S 190 221, 215 252 L215 400 L0 400 Z"
+          fill="#050505" fill-opacity="0.78"/>
+    <circle cx="112" cy="104" r="14" fill="#f59e0b" fill-opacity="0.18"/>
+    <text x="2" y="428" font-family="Inter, sans-serif" font-size="17" fill="#9ca3af" fill-opacity="0.6">05</text>
+  </g>
+  <g transform="translate(1345 180)">
+    <rect width="215" height="400" fill="#1f2933" fill-opacity="0.45" stroke="#4b5563" stroke-opacity="0.35" stroke-width="1"/>
+    <path d="M0 220 C 55 185, 95 275, 140 228 S 190 225, 215 258 L215 400 L0 400 Z"
+          fill="#050505" fill-opacity="0.78"/>
+    <circle cx="126" cy="104" r="13" fill="#f59e0b" fill-opacity="0.18"/>
+    <text x="2" y="428" font-family="Inter, sans-serif" font-size="17" fill="#9ca3af" fill-opacity="0.6">06</text>
+  </g>
+
+  <rect width="1680" height="720" filter="url(#ne)" opacity="0.06"/>
+  <rect x="0.5" y="0.5" width="1679" height="719" fill="none" stroke="#4b5563" stroke-opacity="0.3"/>
+</svg>

@@ -1,0 +1,19 @@
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.jsx'
+
+/* Self-hosted typefaces — no third-party request, no render-blocking CDN,
+   and the site keeps its typography offline. Only the weights used. */
+import '@fontsource-variable/inter'
+import '@fontsource/space-grotesk/400.css'
+import '@fontsource/space-grotesk/500.css'
+import '@fontsource/space-grotesk/600.css'
+import '@fontsource/space-grotesk/700.css'
+
+import './index.css'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+)
