@@ -9,8 +9,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
  * untranslated values never need wrapping.
  *
  * The choice is remembered in localStorage and shared between the main
- * portfolio and the photography page (same origin). First visit: Indonesian
- * browsers get Indonesian, everyone else English.
+ * portfolio and the photography page (same origin). First visit: Indonesian,
+ * until the visitor picks otherwise.
  */
 const STORAGE_KEY = 'lang'
 const LANGS = ['en', 'id']
@@ -22,7 +22,7 @@ function initialLang() {
   } catch {
     /* storage blocked — fall through */
   }
-  return navigator.language?.toLowerCase().startsWith('id') ? 'id' : 'en'
+  return 'id'
 }
 
 const LanguageContext = createContext(null)
