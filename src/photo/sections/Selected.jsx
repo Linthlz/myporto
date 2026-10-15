@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { MaskedLines } from '../components/MaskedLines'
 import { useInViewOnce } from '../../hooks/useInViewOnce'
 import { EASE } from '../../lib/motion'
-import { categoryLabel, photoMeta, photos } from '../data/photos'
+import { categoryLabel, photoMeta, photos, placeholderStyle } from '../data/photos'
 import { useLang } from '../../i18n/language'
 import { COPY } from '../copy'
 
@@ -58,6 +58,7 @@ function Card({ photo, slot, onOpen, register, entered, reduced }) {
         data-photo-cursor={t(COPY.view)}
         aria-label={`${t(COPY.open)} “${t(photo.title)}”`}
         className="selected-frame group block overflow-hidden bg-linen"
+        style={placeholderStyle(photo)}
       >
         <img
           src={photo.thumb}

@@ -1,6 +1,10 @@
 import { gallery } from './gallery'
 import { galleryId } from './gallery.id'
-import cover from '../assets/cover-beach-reflection.webp'
+import cover720 from '../assets/cover-beach-reflection-720.webp'
+import cover1080 from '../assets/cover-beach-reflection-1080.webp'
+import cover1600 from '../assets/cover-beach-reflection-1600.webp'
+import cover2340 from '../assets/cover-beach-reflection-2340.webp'
+import { lqip } from './lqip'
 
 /**
  * ─────────────────────────────────────────────────────────────────────────────
@@ -69,11 +73,15 @@ export const photographer = {
   ],
 }
 
-// The opening photograph. Hero only — it is not part of the archive, so it is
-// kept at its native resolution for the full-bleed reveal.
+// The opening photograph. Hero only — it is not part of the archive. Four
+// widths let each screen download only what it can show: the photo fills the
+// screen's width on landscape screens and its height on portrait ones.
 export const coverPhoto = {
   id: 'beach-reflection',
-  src: cover,
+  src: cover1080,
+  srcSet: `${cover720} 720w, ${cover1080} 1080w, ${cover1600} 1600w, ${cover2340} 2340w`,
+  sizes: '(orientation: portrait) 57vh, 100vw',
+  placeholder: lqip['beach-reflection'],
   size: [2340, 4160],
   title: { en: 'Reflection at Dusk', id: 'Pantulan Senja' },
   place: '',
@@ -97,11 +105,21 @@ export const photos = gallery.map((photo) => {
     alt: { en: photo.alt, id: id?.alt ?? photo.alt },
     src,
     thumb,
+    placeholder: lqip[photo.id],
     // Let the browser pick the thumbnail for small frames and the full file
     // for large or high-density ones.
     srcSet: `${thumb} ${thumbW}w, ${src} ${w}w`,
   }
 })
+
+/**
+ * Background for a photo's frame: its blurred preview while loading, or —
+ * when `image` is given (e.g. the already-cached thumbnail) — that image.
+ */
+export const placeholderStyle = (photo, image = photo.placeholder, position = 'center') =>
+  image
+    ? { backgroundImage: `url("${image}")`, backgroundSize: 'cover', backgroundPosition: position }
+    : undefined
 
 /** "Place · Year", skipping whichever part is blank. */
 export const photoMeta = (photo) => [photo.place, photo.year].filter(Boolean).join(' · ')

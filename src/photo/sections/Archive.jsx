@@ -4,7 +4,7 @@ import { MaskedLines } from '../components/MaskedLines'
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { useInViewOnce } from '../../hooks/useInViewOnce'
 import { EASE } from '../../lib/motion'
-import { categories, categoryLabel, photos } from '../data/photos'
+import { categories, categoryLabel, photos, placeholderStyle } from '../data/photos'
 import { useLang } from '../../i18n/language'
 import { COPY } from '../copy'
 
@@ -48,7 +48,7 @@ function Tile({ photo, index, onOpen, reduced }) {
         data-photo-cursor={t(COPY.view)}
         aria-label={`${t(COPY.open)} “${t(photo.title)}”`}
         className="relative block w-full overflow-hidden bg-linen"
-        style={{ aspectRatio: `${w} / ${h}` }}
+        style={{ aspectRatio: `${w} / ${h}`, ...placeholderStyle(photo) }}
       >
         <img
           src={photo.thumb}

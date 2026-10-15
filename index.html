@@ -24,6 +24,10 @@
 
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
 
+    <!-- Start the hero photograph immediately, in parallel with the script,
+         instead of waiting for React to render the <img>. -->
+    <link rel="preload" as="image" href="/src/assets/photo-hero.webp" type="image/webp" fetchpriority="high" />
+
     <!-- Typefaces are bundled with the app (see src/main.jsx) rather than
          fetched from a font CDN — one less network round trip on first paint. -->
   </head>

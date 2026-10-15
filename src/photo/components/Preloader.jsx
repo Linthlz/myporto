@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { EASE } from '../../lib/motion'
 import { photographer } from '../data/photos'
+import { coverReady } from '../coverLoad'
 import { useLang } from '../../i18n/language'
 import { COPY } from '../copy'
 
@@ -9,9 +10,14 @@ import { COPY } from '../copy'
  * Opening curtain: a counter runs to 100 over the photographer's name, then
  * the whole panel lifts away like a print being pulled from a tray.
  *
+ * The counter is honest: it climbs to 90 on a timer, then waits for the opening
+ * photograph to finish loading before reaching 100 — so the curtain never
+ * lifts onto an empty frame. (Gives up waiting after MAX_WAIT_MS.)
+ *
  * Skipped entirely under reduced motion. Scroll is locked while it shows.
  */
 const DURATION_MS = 1700
+const MAX_WAIT_MS = 8000
 
 export function Preloader({ reduced, onDone }) {
   const { t } = useLang()
@@ -26,16 +32,29 @@ export function Preloader({ reduced, onDone }) {
     document.documentElement.style.overflow = 'hidden'
     const start = performance.now()
     let frame
+    let loaded = false
+    let finished = false
+    let lift = null
+    const giveUp = setTimeout(() => (loaded = true), MAX_WAIT_MS)
+    coverReady.then(() => (loaded = true))
+
     const tick = (now) => {
       const t = Math.min((now - start) / DURATION_MS, 1)
-      // ease-out so the last few numbers linger
-      setCount(Math.round((1 - Math.pow(1 - t, 3)) * 100))
-      if (t < 1) frame = requestAnimationFrame(tick)
-      else setTimeout(() => setOpen(false), 250)
+      // ease-out so the last few numbers linger; hold at 90 until the photo is in
+      const eased = 1 - Math.pow(1 - t, 3)
+      const done = t >= 1 && loaded
+      setCount(done ? 100 : Math.round(eased * 90))
+      if (!done) frame = requestAnimationFrame(tick)
+      else if (!finished) {
+        finished = true
+        lift = setTimeout(() => setOpen(false), 250)
+      }
     }
     frame = requestAnimationFrame(tick)
     return () => {
       cancelAnimationFrame(frame)
+      clearTimeout(giveUp)
+      clearTimeout(lift)
       document.documentElement.style.overflow = ''
     }
   }, [reduced, onDone])

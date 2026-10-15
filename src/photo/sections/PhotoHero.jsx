@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion, useMotionTemplate, useScroll, useSpring, useTransform } from 'framer-motion'
 import { EASE } from '../../lib/motion'
-import { coverPhoto, photoMeta, photographer } from '../data/photos'
+import { coverPhoto, photoMeta, photographer, placeholderStyle } from '../data/photos'
 import { useLang } from '../../i18n/language'
 import { COPY } from '../copy'
 
@@ -81,13 +81,18 @@ export function PhotoHero({ ready, reduced }) {
         {/* the opening print */}
         <motion.div
           className="absolute inset-0 bg-linen"
-          style={reduced ? undefined : { clipPath }}
+          style={{
+            ...placeholderStyle(COVER, COVER.placeholder, '50% 42%'),
+            ...(reduced ? {} : { clipPath }),
+          }}
           initial={{ opacity: 0 }}
           animate={ready ? { opacity: 1 } : undefined}
           transition={{ duration: 1.2, ease: EASE, delay: 0.2 }}
         >
           <motion.img
             src={COVER.src}
+            srcSet={COVER.srcSet}
+            sizes={COVER.sizes}
             alt={t(COVER.alt)}
             fetchPriority="high"
             className="h-full w-full object-cover object-[50%_42%]"

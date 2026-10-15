@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, X } from 'lucide-react'
 import { EASE } from '../../lib/motion'
-import { categoryLabel, photoMeta, photos } from '../data/photos'
+import { categoryLabel, photoMeta, photos, placeholderStyle } from '../data/photos'
 import { useLang } from '../../i18n/language'
 import { COPY } from '../copy'
 
@@ -166,7 +166,15 @@ export function Lightbox({ state, onClose, reduced }) {
                       }}
                       draggable={false}
                       className="absolute cursor-grab object-cover active:cursor-grabbing"
-                      style={{ left: box.left, top: box.top, width: box.width, height: box.height }}
+                      // the grid's thumbnail is already cached: it shows at once
+                      // and the full-size file sharpens over it when it lands
+                      style={{
+                        left: box.left,
+                        top: box.top,
+                        width: box.width,
+                        height: box.height,
+                        ...placeholderStyle(photo, photo.thumb),
+                      }}
                     />
                   </AnimatePresence>
                 )}

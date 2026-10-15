@@ -18,6 +18,18 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+
+    <!-- Start the opening photograph immediately, in parallel with the script.
+         Same srcset/sizes as the hero <img>, so the browser picks one file. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+      href="/src/photo/assets/cover-beach-reflection-1080.webp"
+      imagesrcset="/src/photo/assets/cover-beach-reflection-720.webp 720w, /src/photo/assets/cover-beach-reflection-1080.webp 1080w, /src/photo/assets/cover-beach-reflection-1600.webp 1600w, /src/photo/assets/cover-beach-reflection-2340.webp 2340w"
+      imagesizes="(orientation: portrait) 57vh, 100vw"
+    />
   </head>
   <body>
     <div id="root"></div>
