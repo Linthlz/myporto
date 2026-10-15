@@ -4,10 +4,21 @@ import { ProjectEntry } from '../components/ProjectEntry'
 import { CursorLabel } from '../components/CursorLabel'
 import { GridRules } from '../components/GridRules'
 import { projects } from '../data/projects'
+import { useLang } from '../i18n/language'
+
+const COPY = {
+  label: { en: 'Selected Works', id: 'Karya Pilihan' },
+  lines: { en: ['Five websites,', 'one focus.'], id: ['Lima website,', 'satu fokus.'] },
+  lead: {
+    en: 'Websites for local government, associations, companies and community programmes. Each one started with what its visitors needed to find, and the interface was shaped around that.',
+    id: 'Website untuk pemerintah daerah, asosiasi, perusahaan, dan program pengabdian masyarakat. Setiap proyek dimulai dari apa yang perlu ditemukan pengunjungnya, lalu antarmukanya dibentuk dari situ.',
+  },
+}
 
 export function SelectedWorks() {
   // A single cursor label is shared by every project rather than one per entry.
   const [cursorLabel, setCursorLabel] = useState(null)
+  const { t } = useLang()
 
   return (
     <section id="work" className="relative scroll-mt-24 py-20 md:py-40">
@@ -16,9 +27,9 @@ export function SelectedWorks() {
       <div className="shell relative">
         <SectionHeading
           index="002"
-          label="Selected Works"
-          lines={['Five websites,', 'one focus.']}
-          lead="Websites for local government, associations, companies and community programmes. Each one started with what its visitors needed to find, and the interface was shaped around that."
+          label={t(COPY.label)}
+          lines={t(COPY.lines)}
+          lead={t(COPY.lead)}
         />
 
         {/* Generous vertical rhythm: the whitespace between projects is doing

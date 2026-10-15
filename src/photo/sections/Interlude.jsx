@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import { motion, useMotionTemplate, useScroll, useSpring, useTransform } from 'framer-motion'
 import { photoMeta, photos } from '../data/photos'
+import { useLang } from '../../i18n/language'
+import { COPY } from '../copy'
 
 /**
  * A breath between the archive and the about page: one landscape that opens
@@ -13,6 +15,7 @@ import { photoMeta, photos } from '../data/photos'
 const PHOTO = photos.find((photo) => photo.id === 'crater-lake-clear-morning') ?? photos[0]
 
 export function Interlude({ reduced }) {
+  const { t } = useLang()
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'center center'] })
   const p = useSpring(scrollYProgress, { stiffness: 110, damping: 26, restDelta: 0.0005 })
@@ -25,11 +28,11 @@ export function Interlude({ reduced }) {
   const fade = useTransform(p, [0.6, 1], [0, 1])
 
   return (
-    <section ref={ref} data-magnet className="relative h-[85svh] overflow-hidden md:h-screen" aria-label="Interlude">
+    <section ref={ref} data-magnet className="relative h-[85svh] overflow-hidden md:h-screen" aria-label={t(COPY.interlude)}>
       <motion.div className="absolute inset-0" style={reduced ? undefined : { clipPath }}>
         <motion.img
           src={PHOTO.src}
-          alt={PHOTO.alt}
+          alt={t(PHOTO.alt)}
           loading="lazy"
           className="h-full w-full object-cover"
           style={reduced ? undefined : { scale: zoom }}
@@ -43,11 +46,11 @@ export function Interlude({ reduced }) {
             className="block font-serif text-[clamp(2.4rem,1.2rem+5vw,6.5rem)] leading-[0.95] font-light italic"
             style={reduced ? undefined : { y: lineY }}
           >
-            Wait for the light.
+            {t(COPY.waitForLight)}
           </motion.span>
         </span>
         <motion.p className="label mt-5 text-paper/75" style={reduced ? undefined : { opacity: fade }}>
-          {[PHOTO.title, photoMeta(PHOTO)].filter(Boolean).join(' — ')}
+          {[t(PHOTO.title), photoMeta(PHOTO)].filter(Boolean).join(' — ')}
         </motion.p>
       </div>
     </section>

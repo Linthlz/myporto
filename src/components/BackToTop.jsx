@@ -3,6 +3,7 @@ import { ArrowUp } from 'lucide-react'
 import { useScrolled } from '../hooks/useScrolled'
 import { useMotionSafe } from '../hooks/useMotionSafe'
 import { EASE } from '../lib/motion'
+import { useLang } from '../i18n/language'
 
 /**
  * Floating return-to-top control. Appears once the hero is behind you; its
@@ -13,6 +14,7 @@ const R = 22
 export function BackToTop() {
   const show = useScrolled(700)
   const { reduced } = useMotionSafe()
+  const { t } = useLang()
   const { scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 160, damping: 30, restDelta: 0.001 })
 
@@ -24,7 +26,7 @@ export function BackToTop() {
         <motion.button
           type="button"
           onClick={toTop}
-          aria-label="Back to top"
+          aria-label={t({ en: 'Back to top', id: 'Kembali ke atas' })}
           initial={{ opacity: 0, y: 24, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 24, scale: 0.8 }}

@@ -2,6 +2,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion, useMotionTemplate, useScroll, useSpring, useTransform } from 'framer-motion'
 import { EASE } from '../../lib/motion'
 import { coverPhoto, photoMeta, photographer } from '../data/photos'
+import { useLang } from '../../i18n/language'
+import { COPY } from '../copy'
 
 /**
  * Opening spread. A small framed print sits between the two halves of the
@@ -17,6 +19,7 @@ const COVER = coverPhoto
 const PRINT_SIDE = 37
 
 export function PhotoHero({ ready, reduced }) {
+  const { t } = useLang()
   const ref = useRef(null)
   const leftWordRef = useRef(null)
   const rightWordRef = useRef(null)
@@ -73,7 +76,7 @@ export function PhotoHero({ ready, reduced }) {
   })
 
   return (
-    <section id="top" ref={ref} className="relative h-[260vh]" aria-label="Introduction">
+    <section id="top" ref={ref} className="relative h-[260vh]" aria-label={t(COPY.introSection)}>
       <div className="sticky top-0 h-svh overflow-hidden">
         {/* the opening print */}
         <motion.div
@@ -85,7 +88,7 @@ export function PhotoHero({ ready, reduced }) {
         >
           <motion.img
             src={COVER.src}
-            alt={COVER.alt}
+            alt={t(COVER.alt)}
             fetchPriority="high"
             className="h-full w-full object-cover object-[50%_42%]"
             style={reduced ? undefined : { scale: zoom }}
@@ -100,7 +103,7 @@ export function PhotoHero({ ready, reduced }) {
             space beside the print, so they never touch it. */}
         <h1 className="pointer-events-none absolute inset-x-0 top-[10%] bottom-[10%] md:top-1/2 md:bottom-auto md:-translate-y-1/2">
           <span className="sr-only">
-            {photographer.title.join(' ')} — {photographer.role} by {photographer.name}
+            {photographer.title.join(' ')} — {t(photographer.role)} {t(COPY.by)} {photographer.name}
           </span>
           <motion.span
             aria-hidden="true"
@@ -130,10 +133,10 @@ export function PhotoHero({ ready, reduced }) {
           style={reduced ? undefined : { opacity: captionIn, y: captionY }}
         >
           <p className="max-w-3xl font-serif text-[length:var(--text-lead)] leading-tight font-light italic">
-            {photographer.tagline}
+            {t(photographer.tagline)}
           </p>
           <p className="label mt-5 text-paper/75">
-            {[COVER.title, photoMeta(COVER)].filter(Boolean).join(' — ')}
+            {[t(COVER.title), photoMeta(COVER)].filter(Boolean).join(' — ')}
           </p>
         </motion.div>
 
@@ -148,8 +151,8 @@ export function PhotoHero({ ready, reduced }) {
             transition={{ duration: 1, delay: 0.9 }}
             className="frame label flex justify-between pb-6 text-umber"
           >
-            <span>{photographer.role} · {photographer.location}</span>
-            <span className="hidden sm:inline">Scroll to open</span>
+            <span>{t(photographer.role)} · {photographer.location}</span>
+            <span className="hidden sm:inline">{t(COPY.scrollToOpen)}</span>
           </motion.div>
         </motion.div>
       </div>

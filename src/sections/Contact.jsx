@@ -7,6 +7,7 @@ import { Reveal } from '../components/Reveal'
 import { GridRules } from '../components/GridRules'
 import { drawLineX } from '../lib/motion'
 import { profile } from '../data/profile'
+import { useLang } from '../i18n/language'
 
 /**
  * Closing section.
@@ -22,7 +23,51 @@ import { profile } from '../data/profile'
 const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY
 const ENDPOINT = 'https://api.web3forms.com/submit'
 
+// Errors and status hold these { en, id } objects rather than strings, so a
+// message already on screen follows a language switch.
+const COPY = {
+  label: { en: 'Contact', id: 'Kontak' },
+  name: { en: 'Name', id: 'Nama' },
+  email: { en: 'Email', id: 'Email' },
+  message: { en: 'Message', id: 'Pesan' },
+  namePh: { en: 'Your name', id: 'Nama kamu' },
+  messagePh: { en: 'Tell me about your project', id: 'Ceritakan tentang proyekmu' },
+  needName: { en: 'Please add your name.', id: 'Mohon isi namamu.' },
+  needEmail: { en: 'Please add an email address.', id: 'Mohon isi alamat email.' },
+  badEmail: { en: 'That address does not look right.', id: 'Alamat email itu sepertinya kurang tepat.' },
+  needMessage: {
+    en: 'A little more detail would help — 10 characters minimum.',
+    id: 'Tambahkan sedikit detail — minimal 10 karakter.',
+  },
+  fixFields: { en: 'Please correct the fields above and try again.', id: 'Mohon perbaiki isian di atas lalu coba lagi.' },
+  mailApp: {
+    en: 'Your email app should now be opening with this message ready to send. Nothing has been sent from this page.',
+    id: 'Aplikasi email kamu akan terbuka dengan pesan ini siap dikirim. Belum ada yang terkirim dari halaman ini.',
+  },
+  sendingNow: { en: 'Sending your message…', id: 'Mengirim pesanmu…' },
+  sent: {
+    en: 'Thank you — your message has been sent. I will reply to the address you gave.',
+    id: 'Terima kasih — pesanmu sudah terkirim. Saya akan membalas ke alamat email yang kamu berikan.',
+  },
+  failed: {
+    en: 'The message could not be sent just now. Please try again, or email {email} directly.',
+    id: 'Pesan belum bisa terkirim saat ini. Coba lagi, atau kirim email langsung ke {email}.',
+  },
+  send: { en: 'Send message', id: 'Kirim pesan' },
+  sending: { en: 'Sending…', id: 'Mengirim…' },
+  compose: { en: 'Compose message', id: 'Tulis pesan' },
+  noteKey: {
+    en: 'Your name, email and message are sent straight to my inbox and used only to reply to you.',
+    id: 'Nama, email, dan pesanmu dikirim langsung ke inbox saya dan hanya dipakai untuk membalasmu.',
+  },
+  noteMailto: {
+    en: 'This form opens your own mail client with the message pre-filled, so nothing is stored or transmitted by this site.',
+    id: 'Form ini membuka aplikasi email kamu dengan pesan yang sudah terisi, jadi tidak ada yang disimpan atau dikirim oleh situs ini.',
+  },
+}
+
 export function Contact() {
+  const { t } = useLang()
   const [fields, setFields] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState(null)
@@ -40,12 +85,12 @@ export function Contact() {
 
   const validate = () => {
     const next = {}
-    if (!fields.name.trim()) next.name = 'Please add your name.'
-    if (!fields.email.trim()) next.email = 'Please add an email address.'
+    if (!fields.name.trim()) next.name = COPY.needName
+    if (!fields.email.trim()) next.email = COPY.needEmail
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(fields.email.trim()))
-      next.email = 'That address does not look right.'
+      next.email = COPY.badEmail
     if (fields.message.trim().length < 10)
-      next.message = 'A little more detail would help — 10 characters minimum.'
+      next.message = COPY.needMessage
     return next
   }
 
@@ -56,7 +101,7 @@ export function Contact() {
     setErrors(found)
 
     if (Object.keys(found).length > 0) {
-      setStatus({ type: 'error', text: 'Please correct the fields above and try again.' })
+      setStatus({ type: 'error', text: COPY.fixFields })
       return
     }
 
@@ -70,13 +115,13 @@ export function Contact() {
       window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`
       setStatus({
         type: 'info',
-        text: 'Your email app should now be opening with this message ready to send. Nothing has been sent from this page.',
+        text: COPY.mailApp,
       })
       return
     }
 
     setSending(true)
-    setStatus({ type: 'info', text: 'Sending your message…' })
+    setStatus({ type: 'info', text: COPY.sendingNow })
 
     try {
       const response = await fetch(ENDPOINT, {
@@ -98,12 +143,12 @@ export function Contact() {
       setFields({ name: '', email: '', message: '' })
       setStatus({
         type: 'success',
-        text: 'Thank you — your message has been sent. I will reply to the address you gave.',
+        text: COPY.sent,
       })
     } catch {
       setStatus({
         type: 'error',
-        text: `The message could not be sent just now. Please try again, or email ${profile.email} directly.`,
+        text: COPY.failed,
       })
     } finally {
       setSending(false)
@@ -128,7 +173,7 @@ export function Contact() {
                 006
               </Reveal.Item>
               <Reveal.Item as="span" className="eyebrow">
-                Contact
+                {t(COPY.label)}
               </Reveal.Item>
               <Reveal.Item
                 as="span"
@@ -138,13 +183,13 @@ export function Contact() {
             </Reveal>
 
             <MaskedHeading
-              lines={['Have a project', 'in mind?']}
+              lines={t(profile.contact.lines)}
               className="mt-7 text-[clamp(2rem,4.5vw,3.75rem)]"
             />
 
             <Reveal className="mt-8 space-y-9">
               <Reveal.Item>
-                <p className="max-w-md leading-relaxed text-mist">{profile.contact.body}</p>
+                <p className="max-w-md leading-relaxed text-mist">{t(profile.contact.body)}</p>
               </Reveal.Item>
 
               <Reveal.Item>
@@ -201,7 +246,7 @@ export function Contact() {
 
               <Reveal.Item>
                 <label htmlFor="c-name" className="eyebrow mb-1 block text-[0.625rem]">
-                  Name
+                  {t(COPY.name)}
                 </label>
                 <input
                   id="c-name"
@@ -210,21 +255,21 @@ export function Contact() {
                   autoComplete="name"
                   value={fields.name}
                   onChange={update('name')}
-                  placeholder="Your name"
+                  placeholder={t(COPY.namePh)}
                   aria-invalid={Boolean(errors.name)}
                   aria-describedby={errors.name ? 'c-name-error' : undefined}
                   className={inputClass}
                 />
                 {errors.name && (
                   <p id="c-name-error" className="mt-2 text-[0.75rem] text-amber">
-                    {errors.name}
+                    {t(errors.name)}
                   </p>
                 )}
               </Reveal.Item>
 
               <Reveal.Item>
                 <label htmlFor="c-email" className="eyebrow mb-1 block text-[0.625rem]">
-                  Email
+                  {t(COPY.email)}
                 </label>
                 <input
                   id="c-email"
@@ -240,14 +285,14 @@ export function Contact() {
                 />
                 {errors.email && (
                   <p id="c-email-error" className="mt-2 text-[0.75rem] text-amber">
-                    {errors.email}
+                    {t(errors.email)}
                   </p>
                 )}
               </Reveal.Item>
 
               <Reveal.Item>
                 <label htmlFor="c-message" className="eyebrow mb-1 block text-[0.625rem]">
-                  Message
+                  {t(COPY.message)}
                 </label>
                 <textarea
                   id="c-message"
@@ -255,14 +300,14 @@ export function Contact() {
                   rows={4}
                   value={fields.message}
                   onChange={update('message')}
-                  placeholder="Tell me about your project"
+                  placeholder={t(COPY.messagePh)}
                   aria-invalid={Boolean(errors.message)}
                   aria-describedby={errors.message ? 'c-message-error' : undefined}
                   className={`${inputClass} resize-none`}
                 />
                 {errors.message && (
                   <p id="c-message-error" className="mt-2 text-[0.75rem] text-amber">
-                    {errors.message}
+                    {t(errors.message)}
                   </p>
                 )}
               </Reveal.Item>
@@ -277,7 +322,7 @@ export function Contact() {
                   disabled={sending}
                   className="w-full disabled:opacity-60 sm:w-auto"
                 >
-                  {ACCESS_KEY ? (sending ? 'Sending…' : 'Send message') : 'Compose message'}
+                  {t(ACCESS_KEY ? (sending ? COPY.sending : COPY.send) : COPY.compose)}
                 </MagneticButton>
               </Reveal.Item>
 
@@ -291,16 +336,14 @@ export function Contact() {
                       status.type === 'error' ? 'text-amber' : 'text-mist'
                     }`}
                   >
-                    {status.text}
+                    {t(status.text).replace('{email}', profile.email)}
                   </motion.p>
                 )}
               </div>
 
               <Reveal.Item>
                 <p className="border-t border-steel/25 pt-5 text-[0.6875rem] leading-relaxed text-steel">
-                  {ACCESS_KEY
-                    ? 'Your name, email and message are sent straight to my inbox and used only to reply to you.'
-                    : 'This form opens your own mail client with the message pre-filled, so nothing is stored or transmitted by this site.'}
+                  {t(ACCESS_KEY ? COPY.noteKey : COPY.noteMailto)}
                 </p>
               </Reveal.Item>
             </form>

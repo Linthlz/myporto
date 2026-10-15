@@ -1,6 +1,12 @@
 import { SectionHeading } from '../components/SectionHeading'
 import { Reveal } from '../components/Reveal'
 import { skillGroups } from '../data/skills'
+import { useLang } from '../i18n/language'
+
+const COPY = {
+  label: { en: 'Skills & Expertise', id: 'Keahlian' },
+  lines: { en: ['What I actually', 'work with.'], id: ['Yang benar-benar', 'saya kuasai.'] },
+}
 
 /**
  * Skills as horizontal editorial rows — label on the left, capabilities set as
@@ -8,13 +14,14 @@ import { skillGroups } from '../data/skills'
  * progress bar implies a measurement that does not exist.
  */
 export function Skills() {
+  const { t } = useLang()
   return (
     <section id="skills" className="relative scroll-mt-24 py-20 md:py-40">
       <div className="shell">
         <SectionHeading
           index="004"
-          label="Skills & Expertise"
-          lines={['What I actually', 'work with.']}
+          label={t(COPY.label)}
+          lines={t(COPY.lines)}
         />
 
         <div className="mt-16 md:mt-24">
@@ -40,17 +47,17 @@ export function Skills() {
                     className="text-mist transition-[color,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-0.5 group-hover:text-amber"
                   />
                   <h3 className="text-[clamp(1.125rem,2vw,1.5rem)] transition-colors duration-500 group-hover:text-amber">
-                    {group.title}
+                    {t(group.title)}
                   </h3>
                 </Reveal.Item>
 
                 {/* ------------------------------------------------- items */}
                 <ul className="flex flex-wrap items-center gap-x-3 gap-y-2.5 lg:col-span-7 lg:col-start-6 lg:justify-end">
                   {group.items.map((item, i) => (
-                    <Reveal.Item as="li" key={item} className="flex items-center gap-3">
+                    <Reveal.Item as="li" key={i} className="flex items-center gap-3">
                       {i > 0 && <span className="h-1 w-1 bg-steel/60" aria-hidden="true" />}
                       <span className="cursor-default text-[0.9375rem] text-mist transition-colors duration-400 hover:text-[#e8eaed]">
-                        {item}
+                        {t(item)}
                       </span>
                     </Reveal.Item>
                   ))}

@@ -2,7 +2,9 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, X } from 'lucide-react'
 import { EASE } from '../../lib/motion'
-import { photoMeta, photos } from '../data/photos'
+import { categoryLabel, photoMeta, photos } from '../data/photos'
+import { useLang } from '../../i18n/language'
+import { COPY } from '../copy'
 
 /**
  * Full-screen viewer.
@@ -30,6 +32,7 @@ function fit(size, box) {
 }
 
 export function Lightbox({ state, onClose, reduced }) {
+  const { t } = useLang()
   const closeRef = useRef(null)
   const stageRef = useRef(null)
   const returnFocus = useRef(null)
@@ -108,7 +111,7 @@ export function Lightbox({ state, onClose, reduced }) {
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label={`${photo.title} — photograph ${index + 1} of ${ids.length}`}
+            aria-label={`${t(photo.title)} — ${t(COPY.photoOf).replace('{n}', index + 1).replace('{total}', ids.length)}`}
             className="fixed inset-0 z-[80] flex flex-col text-paper"
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: EASE }}
@@ -136,7 +139,7 @@ export function Lightbox({ state, onClose, reduced }) {
                 onClick={requestClose}
                 className="label inline-flex min-h-11 items-center gap-2 text-paper/80 transition-colors hover:text-paper"
               >
-                Close <X size={16} strokeWidth={1.5} aria-hidden="true" />
+                {t(COPY.close)} <X size={16} strokeWidth={1.5} aria-hidden="true" />
               </button>
             </motion.div>
 
@@ -147,7 +150,7 @@ export function Lightbox({ state, onClose, reduced }) {
                     <motion.img
                       key={photo.id}
                       src={photo.src}
-                      alt={photo.alt}
+                      alt={t(photo.alt)}
                       custom={dir}
                       initial={{ opacity: 0, x: dir * slide, scale: 0.97 }}
                       animate={{ opacity: live ? 1 : 0, x: 0, scale: 1 }}
@@ -179,7 +182,7 @@ export function Lightbox({ state, onClose, reduced }) {
                   <button
                     type="button"
                     onClick={() => step(-1)}
-                    aria-label="Previous photograph"
+                    aria-label={t(COPY.previous)}
                     className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-full border border-paper/25 transition-colors hover:border-paper"
                   >
                     <ArrowLeft size={18} strokeWidth={1.5} />
@@ -187,7 +190,7 @@ export function Lightbox({ state, onClose, reduced }) {
                   <button
                     type="button"
                     onClick={() => step(1)}
-                    aria-label="Next photograph"
+                    aria-label={t(COPY.next)}
                     className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-full border border-paper/25 transition-colors hover:border-paper"
                   >
                     <ArrowRight size={18} strokeWidth={1.5} />
@@ -211,12 +214,12 @@ export function Lightbox({ state, onClose, reduced }) {
                   animate={{ y: '0%' }}
                   transition={{ duration: 0.8, ease: EASE }}
                 >
-                  {photo.title}
+                  {t(photo.title)}
                 </motion.span>
               </span>
               <p className="label text-paper/60">
-                {photoMeta(photo) || photo.category}
-                <span className="md:hidden"> · swipe to browse</span>
+                {photoMeta(photo) || t(categoryLabel[photo.category])}
+                <span className="md:hidden"> · {t(COPY.swipe)}</span>
               </p>
             </motion.div>
           </motion.div>

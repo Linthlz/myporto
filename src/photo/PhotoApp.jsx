@@ -15,6 +15,8 @@ import { Interlude } from './sections/Interlude'
 import { AboutPhotographer } from './sections/AboutPhotographer'
 import { PhotoContact } from './sections/PhotoContact'
 import { photos } from './data/photos'
+import { useLang } from '../i18n/language'
+import { COPY } from './copy'
 
 const FEATURED_IDS = photos.filter((photo) => photo.featured).map((photo) => photo.id)
 
@@ -29,6 +31,7 @@ const FEATURED_IDS = photos.filter((photo) => photo.featured).map((photo) => pho
  */
 export default function PhotoApp() {
   const reduced = Boolean(useReducedMotion())
+  const { t } = useLang()
   // Same gentle pull as the main portfolio: a section caught half-way onto
   // the screen when scrolling stops is carried the rest of the way.
   useSectionMagnet('[data-magnet]')
@@ -51,7 +54,7 @@ export default function PhotoApp() {
       <main className="paper-grain relative">
         <PhotoHero ready={ready} reduced={reduced} />
         <Statement reduced={reduced} />
-        <Marquee items={['Waterfalls', 'Coast', 'Heritage', 'Sky', 'Bali & Java']} reduced={reduced} />
+        <Marquee items={t(COPY.marquee)} reduced={reduced} />
         <Selected reduced={reduced} onOpen={open} paused={viewer !== null} />
         <Archive reduced={reduced} onOpen={open} />
         <Interlude reduced={reduced} />

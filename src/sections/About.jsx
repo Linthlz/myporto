@@ -5,6 +5,20 @@ import { drawLineX } from '../lib/motion'
 import { profile } from '../data/profile'
 import photoBrin from '../assets/photo-brin.webp'
 import photoApkoi from '../assets/photo-apkoi.webp'
+import { useLang } from '../i18n/language'
+
+const COPY = {
+  label: { en: 'About', id: 'Tentang' },
+  focus: { en: 'Current focus', id: 'Fokus saat ini' },
+  brin: {
+    en: 'Lintang with the research team at the BRIN dissemination of the 3D sports pose estimation study',
+    id: 'Lintang bersama tim riset pada diseminasi BRIN untuk studi estimasi pose 3D olahraga',
+  },
+  apkoi: {
+    en: 'Lintang and a teammate at the inauguration of the Indonesian sports coaching education association board',
+    id: 'Lintang dan rekan pada pelantikan pengurus asosiasi pendidikan kepelatihan olahraga Indonesia',
+  },
+}
 
 /**
  * Two-column asymmetry with a sticky image column on large screens. The image
@@ -12,6 +26,7 @@ import photoApkoi from '../assets/photo-apkoi.webp'
  * from the Works grid above it.
  */
 export function About() {
+  const { t } = useLang()
   return (
     <section id="about" className="relative scroll-mt-24 py-20 md:py-40">
       {/* Top and bottom hairlines mark the tonal shift without a hard edge */}
@@ -25,7 +40,7 @@ export function About() {
               <div className="relative">
                 <Media
                   src={photoBrin}
-                  alt="Lintang with the research team at the BRIN dissemination of the 3D sports pose estimation study"
+                  alt={t(COPY.brin)}
                   ratio="4 / 3"
                   className="w-[86%]"
                 />
@@ -34,7 +49,7 @@ export function About() {
                     not a utility-scale value. */}
                 <Media
                   src={photoApkoi}
-                  alt="Lintang and a teammate at the inauguration of the Indonesian sports coaching education association board"
+                  alt={t(COPY.apkoi)}
                   ratio="4 / 3"
                   className="w-[50%]"
                   style={{ position: 'absolute', right: '-4%', bottom: '-22%' }}
@@ -43,13 +58,13 @@ export function About() {
 
               <Reveal className="mt-16 grid grid-cols-3 gap-4 lg:mt-24" gap={0.1}>
                 {profile.about.stats.map((stat) => (
-                  <Reveal.Item key={stat.label}>
+                  <Reveal.Item key={stat.value}>
                     <div className="border-t border-steel/30 pt-4">
                       <div className="font-display text-[clamp(1.5rem,4vw,2.25rem)] leading-none text-amber">
                         {stat.value}
                       </div>
                       <div className="eyebrow mt-2.5 text-[0.5625rem] leading-relaxed">
-                        {stat.label}
+                        {t(stat.label)}
                       </div>
                     </div>
                   </Reveal.Item>
@@ -65,7 +80,7 @@ export function About() {
                 003
               </Reveal.Item>
               <Reveal.Item as="span" className="eyebrow">
-                About
+                {t(COPY.label)}
               </Reveal.Item>
               <Reveal.Item
                 as="span"
@@ -75,7 +90,7 @@ export function About() {
             </Reveal>
 
             <MaskedHeading
-              lines={profile.about.headline.split(' ').reduce(
+              lines={t(profile.about.headline).split(' ').reduce(
                 // Break the headline into balanced lines without hard-coding them
                 (lines, word) => {
                   const last = lines[lines.length - 1]
@@ -94,7 +109,7 @@ export function About() {
             <Reveal className="mt-9 space-y-6" gap={0.09}>
               {profile.about.paragraphs.map((paragraph, i) => (
                 <Reveal.Item key={i}>
-                  <p className="max-w-xl leading-[1.8] text-mist">{paragraph}</p>
+                  <p className="max-w-xl leading-[1.8] text-mist">{t(paragraph)}</p>
                 </Reveal.Item>
               ))}
             </Reveal>
@@ -102,18 +117,18 @@ export function About() {
             {/* Focus list — hairline-separated rows, no bullets, no boxes */}
             <Reveal className="mt-14" gap={0.07}>
               <Reveal.Item>
-                <p className="eyebrow mb-5">Current focus</p>
+                <p className="eyebrow mb-5">{t(COPY.focus)}</p>
               </Reveal.Item>
 
               <ul>
                 {profile.about.focus.map((item, i) => (
-                  <Reveal.Item key={item} as="li">
+                  <Reveal.Item key={i} as="li">
                     <div className="group flex items-baseline gap-5 border-t border-steel/25 py-4 transition-colors duration-500 last:border-b hover:border-amber/50">
                       <span className="eyebrow w-8 shrink-0 text-[0.625rem] text-steel transition-colors duration-500 group-hover:text-amber">
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       <span className="text-[length:var(--text-body)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1">
-                        {item}
+                        {t(item)}
                       </span>
                     </div>
                   </Reveal.Item>

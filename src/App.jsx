@@ -17,11 +17,11 @@ import { Contact } from './sections/Contact'
 // `id`, `index` and `label` feed the "Next" cue at the end of the previous one.
 const SECTIONS = [
   { Section: Hero, tone: 'ink', id: 'home' },
-  { Section: SelectedWorks, tone: 'ink', id: 'work', index: '002', label: 'Selected Works' },
-  { Section: About, tone: 'raised', id: 'about', index: '003', label: 'About' },
-  { Section: Skills, tone: 'ink', id: 'skills', index: '004', label: 'Skills' },
-  { Section: Journey, tone: 'raised', id: 'journey', index: '005', label: 'Journey' },
-  { Section: Contact, tone: 'ink', id: 'contact', index: '006', label: 'Contact' },
+  { Section: SelectedWorks, tone: 'ink', id: 'work', index: '002', label: { en: 'Selected Works', id: 'Karya Pilihan' } },
+  { Section: About, tone: 'raised', id: 'about', index: '003', label: { en: 'About', id: 'Tentang' } },
+  { Section: Skills, tone: 'ink', id: 'skills', index: '004', label: { en: 'Skills', id: 'Keahlian' } },
+  { Section: Journey, tone: 'raised', id: 'journey', index: '005', label: { en: 'Journey', id: 'Perjalanan' } },
+  { Section: Contact, tone: 'ink', id: 'contact', index: '006', label: { en: 'Contact', id: 'Kontak' } },
 ]
 
 export default function App() {

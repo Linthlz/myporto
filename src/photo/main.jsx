@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { LanguageProvider } from '../i18n/language'
 import PhotoApp from './PhotoApp.jsx'
 
 /* Self-hosted type: a classical serif for display, Inter for everything small */
@@ -14,6 +15,8 @@ import './photo.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <PhotoApp />
+    <LanguageProvider>
+      <PhotoApp />
+    </LanguageProvider>
   </StrictMode>
 )

@@ -6,10 +6,20 @@ import { useScrolled } from '../hooks/useScrolled'
 import { useActiveSection } from '../hooks/useActiveSection'
 import { useMotionSafe } from '../hooks/useMotionSafe'
 import { EASE } from '../lib/motion'
+import { LanguageToggle, useLang } from '../i18n/language'
+
+const COPY = {
+  skip: { en: 'Skip to content', id: 'Lewati ke konten' },
+  talk: { en: 'Let’s Talk', id: 'Hubungi Saya' },
+  home: { en: 'back to top', id: 'kembali ke atas' },
+  open: { en: 'Open menu', id: 'Buka menu' },
+  close: { en: 'Close menu', id: 'Tutup menu' },
+}
 
 const SECTION_IDS = ['home', ...navLinks.map((l) => l.id)]
 
 export function Navbar() {
+  const { t } = useLang()
   const [open, setOpen] = useState(false)
   const scrolled = useScrolled(32)
   const active = useActiveSection(SECTION_IDS)
@@ -55,7 +65,7 @@ export function Navbar() {
         onClick={(e) => goTo(e, 'work')}
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[70] focus:bg-amber focus:px-4 focus:py-2 focus:text-ink"
       >
-        Skip to content
+        {t(COPY.skip)}
       </a>
 
       <motion.header
@@ -77,7 +87,7 @@ export function Navbar() {
             href="#home"
             onClick={(e) => goTo(e, 'home')}
             className="group relative z-10 flex items-center gap-2.5"
-            aria-label={`${profile.name} — back to top`}
+            aria-label={`${profile.name} — ${t(COPY.home)}`}
           >
             <span className="font-display text-xl leading-none font-semibold tracking-tight">
               {profile.monogram}
@@ -99,7 +109,7 @@ export function Navbar() {
                       isActive ? 'text-amber' : 'text-mist hover:text-[#e8eaed]'
                     }`}
                   >
-                    {link.label}
+                    {t(link.label)}
                     {isActive && (
                       <motion.span
                         layoutId="nav-active"
@@ -114,11 +124,16 @@ export function Navbar() {
           </ul>
 
           <div className="flex items-center gap-3">
+            <LanguageToggle
+              className="text-[0.75rem] font-medium tracking-[0.16em]"
+              activeClass="text-amber"
+              idleClass="text-mist opacity-70"
+            />
             <a
               href={`mailto:${profile.email}`}
               className="group hidden items-center gap-2 border border-steel/50 px-5 py-2.5 text-[0.75rem] tracking-[0.16em] uppercase transition-colors duration-500 hover:border-amber hover:text-amber sm:inline-flex"
             >
-              Let&apos;s Talk
+              {t(COPY.talk)}
               <ArrowUpRight
                 size={14}
                 strokeWidth={1.75}
@@ -132,7 +147,7 @@ export function Navbar() {
               onClick={() => setOpen((prev) => !prev)}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-label={t(open ? COPY.close : COPY.open)}
               className="relative z-10 -mr-2 inline-flex h-11 w-11 items-center justify-center text-[#e8eaed] lg:hidden"
             >
               {open ? <X size={22} strokeWidth={1.5} /> : <Menu size={22} strokeWidth={1.5} />}
@@ -181,7 +196,7 @@ export function Navbar() {
                         active === link.id ? 'text-amber' : 'text-[#e8eaed]'
                       }`}
                     >
-                      {link.label}
+                      {t(link.label)}
                     </span>
                     <span className="eyebrow text-[0.625rem]">0{i + 1}</span>
                   </a>
@@ -199,7 +214,7 @@ export function Navbar() {
                   href={`mailto:${profile.email}`}
                   className="inline-flex min-h-12 items-center gap-2 bg-amber px-7 py-3.5 text-[0.8125rem] font-medium tracking-[0.16em] text-ink uppercase"
                 >
-                  Let&apos;s Talk
+                  {t(COPY.talk)}
                   <ArrowUpRight size={15} strokeWidth={1.75} aria-hidden="true" />
                 </a>
               </motion.li>

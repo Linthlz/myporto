@@ -13,19 +13,19 @@ import { useReducedMotion } from 'framer-motion'
  * wheel. Resting with the new sheet only peeking in (below the zone) leaves
  * the page where it is, so scrolling back up stays possible.
  *
- * The glide is meant to be felt: it starts fast, runs a hair past the edge
- * and settles back — the small "click" of a magnet catching.
+ * The pull is deliberately light: a short glide that eases in, then lands
+ * with the faintest settle past the edge — present, but never insistent.
  *
  *   selector — elements whose top edges are the resting points
  */
-const IDLE_MS = 110
-const DURATION_MS = 760
+const IDLE_MS = 180
+const DURATION_MS = 900
 // Pull down once the new sheet's top edge sits within this band of the screen
-// (0 = top, 1 = bottom), i.e. once it covers more than about a quarter of it.
-const ZONE = [0.04, 0.74]
+// (0 = top, 1 = bottom), i.e. once it covers more than about 40% of it.
+const ZONE = [0.06, 0.6]
 
-// ease-out-back: quick start, slight overshoot, settle
-const OVERSHOOT = 1.15
+// ease-out-back with a very small overshoot (~0.5% of the distance)
+const OVERSHOOT = 0.35
 const easeOutBack = (t) => 1 + (OVERSHOOT + 1) * Math.pow(t - 1, 3) + OVERSHOOT * Math.pow(t - 1, 2)
 
 export function useSectionMagnet(selector) {

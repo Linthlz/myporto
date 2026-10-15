@@ -4,7 +4,9 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { MaskedLines } from '../components/MaskedLines'
 import { useInViewOnce } from '../../hooks/useInViewOnce'
 import { EASE } from '../../lib/motion'
-import { photoMeta, photos } from '../data/photos'
+import { categoryLabel, photoMeta, photos } from '../data/photos'
+import { useLang } from '../../i18n/language'
+import { COPY } from '../copy'
 
 /**
  * Selected works as an endless carousel — a merry-go-round of prints.
@@ -35,6 +37,7 @@ const RESUME_AFTER_MS = 4000
 const SETTLE_MS = 140
 
 function Card({ photo, slot, onOpen, register, entered, reduced }) {
+  const { t } = useLang()
   const [w, h] = photo.size
   const index = slot % N
   const clone = Math.floor(slot / N) !== 1 // only the middle copy is "real"
@@ -52,15 +55,15 @@ function Card({ photo, slot, onOpen, register, entered, reduced }) {
         type="button"
         tabIndex={clone ? -1 : undefined}
         onClick={(event) => onOpen(photo.id, event.currentTarget.getBoundingClientRect())}
-        data-photo-cursor="View"
-        aria-label={`Open “${photo.title}”`}
+        data-photo-cursor={t(COPY.view)}
+        aria-label={`${t(COPY.open)} “${t(photo.title)}”`}
         className="selected-frame group block overflow-hidden bg-linen"
       >
         <img
           src={photo.thumb}
           srcSet={photo.srcSet}
           sizes={`(min-width: 768px) calc(60vh * ${(w / h).toFixed(3)}), 76vw`}
-          alt={clone ? '' : photo.alt}
+          alt={clone ? '' : t(photo.alt)}
           loading="lazy"
           draggable={false}
           className="selected-img h-[48svh] w-[calc(48svh*var(--ratio))] max-w-[76vw] object-cover md:h-[60vh] md:w-[calc(60vh*var(--ratio))] md:max-w-none"
@@ -69,8 +72,8 @@ function Card({ photo, slot, onOpen, register, entered, reduced }) {
       <figcaption className="selected-caption mt-5 flex items-baseline gap-4">
         <span className="label text-clay">{String(index + 1).padStart(2, '0')}</span>
         <span>
-          <span className="block font-serif text-2xl leading-tight md:text-3xl">{photo.title}</span>
-          <span className="label mt-1.5 block text-umber">{photoMeta(photo) || photo.category}</span>
+          <span className="block font-serif text-2xl leading-tight md:text-3xl">{t(photo.title)}</span>
+          <span className="label mt-1.5 block text-umber">{photoMeta(photo) || t(categoryLabel[photo.category])}</span>
         </span>
       </figcaption>
     </motion.figure>
@@ -78,6 +81,7 @@ function Card({ photo, slot, onOpen, register, entered, reduced }) {
 }
 
 export function Selected({ reduced, onOpen, paused = false }) {
+  const { t } = useLang()
   const sectionRef = useRef(null)
   const trackRef = useRef(null)
   const cards = useRef([])
@@ -279,14 +283,14 @@ export function Selected({ reduced, onOpen, paused = false }) {
     'flex h-12 w-12 items-center justify-center rounded-full border border-bark/25 transition-colors duration-500 hover:border-bark hover:bg-bark hover:text-paper'
 
   return (
-    <section id="selected" ref={sectionRef} data-magnet className="scroll-mt-20 py-24 md:py-32" aria-roledescription="carousel">
+    <section id="selected" ref={sectionRef} data-magnet className="scroll-mt-20 py-24 md:py-32" aria-roledescription={t(COPY.carousel)}>
       <div className="frame flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="label text-umber">(02) — Selected</p>
+          <p className="label text-umber">{t(COPY.selected)}</p>
           <MaskedLines
             lines={[
               <>
-                Selected <span className="italic">frames</span>
+                {t(COPY.selectedTitle)[0]} <span className="italic">{t(COPY.selectedTitle)[1]}</span>
               </>,
             ]}
             className="mt-5 text-[length:var(--text-h2)]"
@@ -297,7 +301,7 @@ export function Selected({ reduced, onOpen, paused = false }) {
           <div>
             <p className="label text-umber tabular-nums" aria-live="polite">
               {String(current + 1).padStart(2, '0')} / {String(N).padStart(2, '0')}
-              <span className="hidden lg:inline"> — drag or swipe</span>
+              <span className="hidden lg:inline"> — {t(COPY.dragOrSwipe)}</span>
             </p>
             {/* fills over each two-second beat while the carousel turns */}
             <div className="relative mt-2 h-px w-full bg-bark/15">
@@ -310,10 +314,10 @@ export function Selected({ reduced, onOpen, paused = false }) {
               />
             </div>
           </div>
-          <button type="button" className={arrow} onClick={() => go(-1)} aria-label="Previous photograph">
+          <button type="button" className={arrow} onClick={() => go(-1)} aria-label={t(COPY.previous)}>
             <ArrowLeft size={17} strokeWidth={1.5} />
           </button>
-          <button type="button" className={arrow} onClick={() => go(1)} aria-label="Next photograph">
+          <button type="button" className={arrow} onClick={() => go(1)} aria-label={t(COPY.next)}>
             <ArrowRight size={17} strokeWidth={1.5} />
           </button>
         </div>
@@ -326,7 +330,7 @@ export function Selected({ reduced, onOpen, paused = false }) {
         onTouchStart={hold}
         onWheel={(event) => Math.abs(event.deltaX) > Math.abs(event.deltaY) && hold()}
         onKeyDown={hold}
-        aria-label="Selected photographs — use the arrow buttons or scroll sideways"
+        aria-label={t(COPY.stripLabel)}
         className="selected-track mt-12 flex snap-x snap-mandatory items-start gap-6 overflow-x-auto overscroll-x-contain pb-6 md:mt-16 md:gap-12"
       >
         {RING.map((photo, slot) => (

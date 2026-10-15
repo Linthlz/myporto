@@ -2,6 +2,8 @@ import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
 import { ArrowUp } from 'lucide-react'
 import { useScrolled } from '../../hooks/useScrolled'
 import { EASE } from '../../lib/motion'
+import { useLang } from '../../i18n/language'
+import { COPY } from '../copy'
 
 /**
  * Square return-to-top control for the photography page — a small print
@@ -9,6 +11,7 @@ import { EASE } from '../../lib/motion'
  * once the opening spread is behind you.
  */
 export function SquareToTop({ reduced }) {
+  const { t } = useLang()
   const show = useScrolled(1200)
   const { scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 160, damping: 30, restDelta: 0.001 })
@@ -21,7 +24,7 @@ export function SquareToTop({ reduced }) {
         <motion.button
           type="button"
           onClick={toTop}
-          aria-label="Back to top"
+          aria-label={t(COPY.toTop)}
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 24 }}

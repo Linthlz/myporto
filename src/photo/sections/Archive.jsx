@@ -4,7 +4,9 @@ import { MaskedLines } from '../components/MaskedLines'
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { useInViewOnce } from '../../hooks/useInViewOnce'
 import { EASE } from '../../lib/motion'
-import { categories, photos } from '../data/photos'
+import { categories, categoryLabel, photos } from '../data/photos'
+import { useLang } from '../../i18n/language'
+import { COPY } from '../copy'
 
 /**
  * The full archive: a filterable masonry wall. Each print is revealed by a
@@ -21,6 +23,7 @@ import { categories, photos } from '../data/photos'
 const PAGE = 12
 
 function Tile({ photo, index, onOpen, reduced }) {
+  const { t } = useLang()
   const ref = useRef(null)
   const seen = useInViewOnce(ref, { amount: 0.2 })
   const shown = reduced || seen
@@ -42,8 +45,8 @@ function Tile({ photo, index, onOpen, reduced }) {
       <button
         type="button"
         onClick={(event) => onOpen(photo.id, event.currentTarget.getBoundingClientRect())}
-        data-photo-cursor="View"
-        aria-label={`Open “${photo.title}”`}
+        data-photo-cursor={t(COPY.view)}
+        aria-label={`${t(COPY.open)} “${t(photo.title)}”`}
         className="relative block w-full overflow-hidden bg-linen"
         style={{ aspectRatio: `${w} / ${h}` }}
       >
@@ -51,7 +54,7 @@ function Tile({ photo, index, onOpen, reduced }) {
           src={photo.thumb}
           srcSet={photo.srcSet}
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          alt={photo.alt}
+          alt={t(photo.alt)}
           loading="lazy"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover transition-[clip-path,transform] duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
@@ -62,19 +65,20 @@ function Tile({ photo, index, onOpen, reduced }) {
           }}
         />
         <span className="pointer-events-none absolute inset-x-0 bottom-0 flex translate-y-3 items-end justify-between bg-linear-to-t from-bark/70 to-transparent p-4 pt-14 text-left text-paper opacity-0 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
-          <span className="font-serif text-xl leading-tight italic">{photo.title}</span>
+          <span className="font-serif text-xl leading-tight italic">{t(photo.title)}</span>
           <span className="label shrink-0 pl-3 text-paper/80">{photo.year}</span>
         </span>
       </button>
       <figcaption className="mt-3 flex justify-between gap-4">
-        <span className="font-serif text-lg leading-snug">{photo.title}</span>
-        <span className="label shrink-0 pt-1 text-umber">{photo.category}</span>
+        <span className="font-serif text-lg leading-snug">{t(photo.title)}</span>
+        <span className="label shrink-0 pt-1 text-umber">{t(categoryLabel[photo.category])}</span>
       </figcaption>
     </motion.figure>
   )
 }
 
 export function Archive({ reduced, onOpen }) {
+  const { t } = useLang()
   const sectionRef = useRef(null)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'start 0.1'] })
   const pull = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.0005 })
@@ -109,18 +113,18 @@ export function Archive({ reduced, onOpen }) {
         >
           <div className="flex flex-col gap-8 md:gap-10">
             <div>
-              <p className="label text-umber">(03) — Archive</p>
+              <p className="label text-umber">{t(COPY.archive)}</p>
               <MaskedLines
                 lines={[
                   <>
-                    The <span className="italic">archive</span>
+                    {t(COPY.archiveTitle)[0]} <span className="italic">{t(COPY.archiveTitle)[1]}</span>
                   </>,
                 ]}
                 className="mt-5 text-[length:var(--text-h2)]"
               />
             </div>
 
-            <div role="group" aria-label="Filter photographs" className="flex flex-wrap gap-2">
+            <div role="group" aria-label={t(COPY.filter)} className="flex flex-wrap gap-2">
               {categories.map((category) => {
                 const count =
                   category === 'All'
@@ -145,7 +149,7 @@ export function Archive({ reduced, onOpen }) {
                       />
                     )}
                     <span className="relative">
-                      {category} <sup className="opacity-60">{count}</sup>
+                      {t(categoryLabel[category] ?? category)} <sup className="opacity-60">{count}</sup>
                     </span>
                   </button>
                 )
@@ -180,9 +184,9 @@ export function Archive({ reduced, onOpen }) {
                 onClick={() => setShown((n) => n + PAGE)}
                 className="label group inline-flex min-h-12 items-center gap-3 rounded-full border border-bark/30 px-7 py-3 transition-colors duration-500 hover:border-bark hover:bg-bark hover:text-paper"
               >
-                Show more
+                {t(COPY.showMore)}
                 <span className="text-umber transition-colors duration-500 group-hover:text-paper/70">
-                  {remaining} left
+                  {remaining} {t(COPY.left)}
                 </span>
                 <Plus
                   size={14}

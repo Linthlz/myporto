@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { LanguageProvider } from './i18n/language'
 import App from './App.jsx'
 
 /* Self-hosted typefaces — no third-party request, no render-blocking CDN,
@@ -14,6 +15,8 @@ import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <LanguageProvider>
+      <App />
+    </LanguageProvider>
   </StrictMode>
 )

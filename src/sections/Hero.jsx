@@ -9,6 +9,17 @@ import { useMotionSafe } from '../hooks/useMotionSafe'
 import { profile } from '../data/profile'
 import { drawLineX, EASE, fadeUp, stagger } from '../lib/motion'
 import portrait from '../assets/photo-hero.webp'
+import { useLang } from '../i18n/language'
+
+const COPY = {
+  explore: { en: 'Explore Work', id: 'Lihat Karya' },
+  touch: { en: 'Get in Touch', id: 'Hubungi Saya' },
+  scroll: { en: 'Scroll', id: 'Gulir' },
+  alt: {
+    en: 'Silhouette of Lintang at a seaside temple in northern Bali at sunset',
+    id: 'Siluet Lintang di pura tepi laut Bali Utara saat matahari terbenam',
+  },
+}
 
 /**
  * Asymmetric editorial hero: the headline owns roughly two thirds of the
@@ -18,6 +29,7 @@ import portrait from '../assets/photo-hero.webp'
  */
 export function Hero() {
   const { v } = useMotionSafe()
+  const { t } = useLang()
 
   return (
     <section
@@ -40,7 +52,7 @@ export function Hero() {
                 001
               </motion.span>
               <motion.span variants={v(fadeUp)} className="eyebrow max-w-xs leading-relaxed">
-                {profile.eyebrow}
+                {t(profile.eyebrow)}
               </motion.span>
             </motion.div>
 
@@ -48,7 +60,7 @@ export function Hero() {
               as="h1"
               trigger="mount"
               delay={0.3}
-              lines={profile.headlineLines}
+              lines={t(profile.headlineLines)}
               className="mt-7 text-[length:var(--text-hero)] font-medium"
               lineClassName="[&>span]:text-amber"
             />
@@ -63,12 +75,12 @@ export function Hero() {
                 variants={v(fadeUp)}
                 className="max-w-2xl text-[length:var(--text-lead)] leading-relaxed font-light text-mist"
               >
-                {profile.intro}
+                {t(profile.intro)}
               </motion.p>
 
               <motion.div variants={v(fadeUp)} className="mt-9 flex flex-wrap items-center gap-3">
                 <MagneticButton href="#work" icon={ArrowDown} className="w-full sm:w-auto">
-                  Explore Work
+                  {t(COPY.explore)}
                 </MagneticButton>
                 <MagneticButton
                   href={`mailto:${profile.email}`}
@@ -76,7 +88,7 @@ export function Hero() {
                   icon={ArrowUpRight}
                   className="w-full sm:w-auto"
                 >
-                  Get in Touch
+                  {t(COPY.touch)}
                 </MagneticButton>
               </motion.div>
             </motion.div>
@@ -104,7 +116,7 @@ export function Hero() {
             <div className="relative">
               <Media
                 src={portrait}
-                alt="Silhouette of Lintang at a seaside temple in northern Bali at sunset"
+                alt={t(COPY.alt)}
                 ratio="3 / 4"
                 priority
                 className="max-h-[52vh] w-full lg:max-h-none"
@@ -135,7 +147,7 @@ export function Hero() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber opacity-70" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-amber" />
                 </span>
-                {profile.availability}
+                {t(profile.availability)}
               </p>
             )}
 
@@ -143,7 +155,7 @@ export function Hero() {
               href="#work"
               className="group flex items-center gap-3 text-[0.75rem] tracking-[0.18em] text-mist uppercase transition-colors duration-500 hover:text-amber"
             >
-              Scroll
+              {t(COPY.scroll)}
               <motion.span
                 aria-hidden="true"
                 animate={{ y: [0, 6, 0] }}

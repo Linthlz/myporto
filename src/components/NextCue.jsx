@@ -2,6 +2,12 @@ import { useRef } from 'react'
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import { useMotionSafe } from '../hooks/useMotionSafe'
+import { useLang } from '../i18n/language'
+
+const COPY = {
+  next: { en: 'Next', id: 'Berikutnya' },
+  section: { en: 'Next section', id: 'Bagian berikutnya' },
+}
 
 /**
  * End-of-section signpost: "Next — 003 About".
@@ -13,6 +19,7 @@ import { useMotionSafe } from '../hooks/useMotionSafe'
 export function NextCue({ id, index, label }) {
   const ref = useRef(null)
   const { reduced } = useMotionSafe()
+  const { t } = useLang()
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end end'] })
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, restDelta: 0.001 })
@@ -33,7 +40,7 @@ export function NextCue({ id, index, label }) {
         href={`#${id}`}
         onClick={goTo}
         className="group block"
-        aria-label={`Next section: ${label}`}
+        aria-label={`${t(COPY.section)}: ${t(label)}`}
       >
         <div className="relative h-px bg-steel/25">
           <motion.span
@@ -44,7 +51,7 @@ export function NextCue({ id, index, label }) {
         </div>
 
         <p className="eyebrow flex items-center gap-3 pt-6 md:pt-8">
-          <span>Next</span>
+          <span>{t(COPY.next)}</span>
           <span className="text-amber">{index}</span>
         </p>
 
@@ -55,7 +62,7 @@ export function NextCue({ id, index, label }) {
             className="font-display text-[clamp(2rem,7vw,5rem)] leading-[1.05] font-medium tracking-[-0.03em] transition-colors duration-500 group-hover:text-amber"
             style={reduced ? undefined : { y: lift, opacity: fade }}
           >
-            {label}
+            {t(label)}
           </motion.p>
 
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-steel/50 transition-colors duration-500 group-hover:border-amber group-hover:text-amber md:h-14 md:w-14">

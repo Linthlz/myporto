@@ -4,6 +4,15 @@ import { Media } from './Media'
 import { Reveal } from './Reveal'
 import { useMotionSafe } from '../hooks/useMotionSafe'
 import { drawLineX, fadeUp } from '../lib/motion'
+import { useLang } from '../i18n/language'
+
+const COPY = {
+  open: { en: 'open project', id: 'buka proyek' },
+  view: { en: 'View Project', id: 'Lihat Proyek' },
+  progress: { en: 'In Progress', id: 'Dalam Proses' },
+  link: { en: 'View project', id: 'Lihat proyek' },
+  writeup: { en: 'Write-up in progress', id: 'Ulasan sedang disiapkan' },
+}
 
 /**
  * One project, laid out at one of three scales. The scale is what keeps the
@@ -36,6 +45,7 @@ const LAYOUT = {
 
 export function ProjectEntry({ project, onHoverChange }) {
   const { v } = useMotionSafe()
+  const { t } = useLang()
   const layout = LAYOUT[project.scale] ?? LAYOUT.lead
   const hasLink = Boolean(project.href)
   // With a known size, show the whole image: its own ratio and no parallax,
@@ -48,7 +58,7 @@ export function ProjectEntry({ project, onHoverChange }) {
         href: project.href,
         target: '_blank',
         rel: 'noreferrer noopener',
-        'aria-label': `${project.title} — open project`,
+        'aria-label': `${project.title} — ${t(COPY.open)}`,
       }
     : {}
 
@@ -63,14 +73,14 @@ export function ProjectEntry({ project, onHoverChange }) {
         {...wrapperProps}
         className={`relative block overflow-hidden ${layout.media}`}
         data-cursor="hide" /* CursorLabel takes over here */
-        onMouseEnter={() => onHoverChange?.(hasLink ? 'View Project' : 'In Progress')}
+        onMouseEnter={() => onHoverChange?.(t(hasLink ? COPY.view : COPY.progress))}
         onMouseLeave={() => onHoverChange?.(null)}
         onFocus={() => onHoverChange?.(null)}
         variants={v(fadeUp)}
       >
         <Media
           src={project.image}
-          alt={project.alt}
+          alt={t(project.alt)}
           ratio={natural ? `${project.size[0]} / ${project.size[1]}` : layout.ratio}
           parallax={natural ? 0 : layout.parallax}
           zoomOnHover
@@ -105,12 +115,12 @@ export function ProjectEntry({ project, onHoverChange }) {
         </h3>
 
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-          <span className="eyebrow">{project.category}</span>
+          <span className="eyebrow">{t(project.category)}</span>
           <span className="hidden h-1 w-1 bg-steel sm:block" aria-hidden="true" />
           <span className="eyebrow w-full text-amber sm:w-auto">{project.role}</span>
         </div>
 
-        <p className="mt-5 max-w-md leading-relaxed text-mist">{project.summary}</p>
+        <p className="mt-5 max-w-md leading-relaxed text-mist">{t(project.summary)}</p>
 
         <ul className="mt-5 flex flex-wrap gap-x-2.5 gap-y-2 lg:hidden">
           {project.stack.map((tech) => (
@@ -127,14 +137,14 @@ export function ProjectEntry({ project, onHoverChange }) {
             rel="noreferrer noopener"
             className="link-underline mt-7 inline-flex items-center gap-2 text-[0.75rem] tracking-[0.16em] text-[#e8eaed] uppercase transition-colors duration-500 hover:text-amber"
           >
-            View project
+            {t(COPY.link)}
             <ArrowUpRight size={14} strokeWidth={1.75} aria-hidden="true" />
           </a>
         ) : (
           /* Honest empty state — better than a link that goes nowhere */
           <p className="mt-7 inline-flex items-center gap-2 text-[0.75rem] tracking-[0.16em] text-steel uppercase">
             <Lock size={13} strokeWidth={1.5} aria-hidden="true" />
-            Write-up in progress
+            {t(COPY.writeup)}
           </p>
         )}
       </motion.div>

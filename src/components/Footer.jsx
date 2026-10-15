@@ -1,15 +1,17 @@
-import { ArrowUp } from 'lucide-react'
 import { navLinks, profile } from '../data/profile'
 import { useMotionSafe } from '../hooks/useMotionSafe'
+import { LanguageToggle, useLang } from '../i18n/language'
+
+const COPY = {
+  rights: { en: 'All rights reserved.', id: 'Hak cipta dilindungi.' },
+  photo: { en: 'Photography portfolio ↗', id: 'Portfolio fotografi ↗' },
+}
 
 export function Footer() {
   const { reduced } = useMotionSafe()
+  const { t } = useLang()
   const year = new Date().getFullYear()
   const activeSocials = profile.socials.filter((social) => social.href)
-
-  const toTop = () => {
-    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
-  }
 
   const goTo = (event, id) => {
     event.preventDefault()
@@ -32,8 +34,13 @@ export function Footer() {
               <span className="text-[0.9375rem] tracking-tight">{profile.name}</span>
             </div>
             <p className="eyebrow mt-4 text-[0.625rem] leading-relaxed">
-              © {year} {profile.name}. All rights reserved.
+              © {year} {profile.name}. {t(COPY.rights)}
             </p>
+            <LanguageToggle
+              className="mt-5 text-[0.75rem] font-medium tracking-[0.16em]"
+              activeClass="text-amber"
+              idleClass="text-mist opacity-70"
+            />
           </div>
 
           {/* navigation */}
@@ -46,7 +53,7 @@ export function Footer() {
                     onClick={(e) => goTo(e, link.id)}
                     className="link-underline text-[0.8125rem] text-mist transition-colors duration-500 hover:text-amber"
                   >
-                    {link.label}
+                    {t(link.label)}
                   </a>
                 </li>
               ))}
@@ -56,7 +63,7 @@ export function Footer() {
               href="photography/"
               className="link-underline mt-5 inline-block text-[0.8125rem] text-amber transition-colors duration-500 hover:text-[#e8eaed]"
             >
-              Photography portfolio ↗
+              {t(COPY.photo)}
             </a>
 
             {activeSocials.length > 0 && (
@@ -76,23 +83,6 @@ export function Footer() {
               </ul>
             )}
           </nav>
-
-          {/* back to top */}
-          <button
-            type="button"
-            onClick={toTop}
-            className="group inline-flex min-h-12 items-center gap-2.5 self-start text-[0.75rem] tracking-[0.18em] text-mist uppercase transition-colors duration-500 hover:text-amber"
-          >
-            Back to top
-            <span className="flex h-9 w-9 items-center justify-center border border-steel/50 transition-colors duration-500 group-hover:border-amber">
-              <ArrowUp
-                size={14}
-                strokeWidth={1.75}
-                aria-hidden="true"
-                className="transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-0.5"
-              />
-            </span>
-          </button>
         </div>
       </div>
     </footer>

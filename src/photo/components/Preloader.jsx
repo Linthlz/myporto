@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { EASE } from '../../lib/motion'
 import { photographer } from '../data/photos'
+import { useLang } from '../../i18n/language'
+import { COPY } from '../copy'
 
 /**
  * Opening curtain: a counter runs to 100 over the photographer's name, then
@@ -12,6 +14,7 @@ import { photographer } from '../data/photos'
 const DURATION_MS = 1700
 
 export function Preloader({ reduced, onDone }) {
+  const { t } = useLang()
   const [count, setCount] = useState(0)
   const [open, setOpen] = useState(!reduced)
 
@@ -53,8 +56,8 @@ export function Preloader({ reduced, onDone }) {
           transition={{ duration: 1.1, ease: EASE }}
         >
           <div className="label flex justify-between text-paper/60">
-            <span>Photography</span>
-            <span>{photographer.region}</span>
+            <span>{t(COPY.nav)}</span>
+            <span>{t(photographer.region)}</span>
           </div>
 
           <div className="overflow-hidden">
@@ -70,7 +73,7 @@ export function Preloader({ reduced, onDone }) {
           </div>
 
           <div className="flex items-end justify-between">
-            <span className="label text-paper/60">Loading the archive</span>
+            <span className="label text-paper/60">{t(COPY.loading)}</span>
             <span className="font-serif text-[clamp(3rem,10vw,9rem)] leading-none font-light tabular-nums">
               {String(count).padStart(3, '0')}
             </span>
